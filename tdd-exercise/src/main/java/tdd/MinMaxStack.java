@@ -1,7 +1,7 @@
 package tdd;
 
 /**
- * Task 2 - TDD for Smart Door Lock
+ * Task 2 - TDD for Min Max Stack
  * A stack that supports retrieving the minimum and maximum values in constant time.
  * A stack is a data structure that allows adding and removing elements in a last-in-first-out (LIFO) manner.
  * Therefore, giving a stack [1, 2, 3], the first element to be removed is 3, then 2, and finally 1.
