@@ -6,15 +6,15 @@ import java.util.Enumeration;
 public class SmartDoorLockImpl implements SmartDoorLock{
 
 
-    private static final int MAX_ATTEMPS = 3;
-    private int attemps;
+    private static final int MAX_ATTEMPTS = 3;
+    private int attempts;
     private int pin;
     private boolean locked;
     private boolean blocked;
     private boolean reset;
 
     public SmartDoorLockImpl() {
-        this.attemps = 0;
+        this.attempts = 0;
         this.locked = false;
         this.blocked = false;
     }
@@ -22,19 +22,27 @@ public class SmartDoorLockImpl implements SmartDoorLock{
     @Override
     public void setPin(int pin) {
         this.pin = pin;
-        this.locked = true;
     }
 
     @Override
     public void unlock(int pin) {
         if (this.pin == pin) {
             this.locked = false;
+            this.attempts = 0;
+        } else {
+            this.attempts++;
+            if(attempts >= MAX_ATTEMPTS) this.blocked = true;
         }
     }
 
     @Override
-    public void lock() {
-        this.locked = true;
+    public void lock() throws Exception {
+        if (this.pin != 0){
+            this.locked = true;
+        }else{
+            throw new Exception();
+        }
+
     }
 
     @Override
@@ -60,10 +68,6 @@ public class SmartDoorLockImpl implements SmartDoorLock{
     @Override
     public void reset() {
 
-    }
-
-    private void setBlocked(){
-        this.blocked = true;
     }
 
     public int getPin() {
