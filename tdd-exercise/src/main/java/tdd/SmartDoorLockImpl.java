@@ -1,6 +1,7 @@
 package tdd;
 
 import java.util.Enumeration;
+import java.util.Map;
 
 
 public class SmartDoorLockImpl implements SmartDoorLock{
@@ -14,6 +15,7 @@ public class SmartDoorLockImpl implements SmartDoorLock{
     private boolean reset;
 
     public SmartDoorLockImpl() {
+        this.pin = 0;
         this.attempts = 0;
         this.locked = false;
         this.blocked = false;
@@ -21,11 +23,14 @@ public class SmartDoorLockImpl implements SmartDoorLock{
 
     @Override
     public void setPin(int pin) {
-        this.pin = pin;
+        if (!locked && !blocked) {
+            this.pin = pin;
+        }
     }
 
     @Override
     public void unlock(int pin) {
+        if (blocked) return;
         if (this.pin == pin) {
             this.locked = false;
             this.attempts = 0;
@@ -57,20 +62,20 @@ public class SmartDoorLockImpl implements SmartDoorLock{
 
     @Override
     public int getMaxAttempts() {
-        return 0;
+        return MAX_ATTEMPTS;
     }
 
     @Override
     public int getFailedAttempts() {
-        return 0;
+        return this.attempts;
     }
 
     @Override
     public void reset() {
-
+        this.pin = 0;
+        this.locked = false;
+        this.blocked = false;
+        this.attempts = 0;
     }
 
-    public int getPin() {
-        return pin;
-    }
 }
