@@ -4,9 +4,9 @@ import java.util.Stack;
 
 public class MinMaxStackImpl implements MinMaxStack{
 
-    private Stack<Integer> mainStack;
-    private Stack<Integer> maxStack;
-    private Stack<Integer> minStack;
+    private final Stack<Integer> mainStack;
+    private final Stack<Integer> maxStack;
+    private final Stack<Integer> minStack;
     public MinMaxStackImpl() {
         this.mainStack = new Stack<>();
         this.maxStack = new Stack<>();
@@ -64,6 +64,6 @@ public class MinMaxStackImpl implements MinMaxStack{
 
     @Override
     public int size() {
-        return 0;
+        return this.mainStack.size();
     }
 }

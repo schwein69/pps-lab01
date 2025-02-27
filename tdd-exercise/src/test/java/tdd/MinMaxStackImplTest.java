@@ -57,8 +57,9 @@ class MinMaxStackImplTest {
     }
 
     @Test
-    public void todo() {
-        assertTrue(true);
+    public void TestCurrentStackSize() {
+        pushMultipleValues();
+        assertEquals(ITERATIONS,stack.size());
     }
 
 }
