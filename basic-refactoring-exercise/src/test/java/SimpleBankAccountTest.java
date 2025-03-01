@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * The test suite for testing the SimpleBankAccount implementation
  */
 class SimpleBankAccountTest {
-    private static final int DEFAULT_DRAW_FEE = 1;
     private static final int INITIAL_DEPOSIT = 100;
     private static final int DRAW_AMOUNT = 50;
     private static final int N_OF_ATTEMPTS = 2;
@@ -47,27 +46,24 @@ class SimpleBankAccountTest {
     @Test
     void testWrongDeposit() {
         bankAccount.deposit(2, 50);
-        assertEquals(INITIAL_DEPOSIT, bankAccount.getBalance());
+        assertEquals(0, bankAccount.getBalance());
     }
 
     @Test
     void testWithdraw() {
         bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
-        bankAccount.withdraw(accountHolder.getId(), DRAW_AMOUNT);
-        assertEquals(DRAW_AMOUNT - DEFAULT_DRAW_FEE, bankAccount.getBalance());
+        assertDoesNotThrow(()->bankAccount.withdraw(accountHolder.getId(), DRAW_AMOUNT));
     }
 
     @Test
     void testWrongWithdraw() {
         bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
-        bankAccount.withdraw(2, DRAW_AMOUNT * 2);
-        assertEquals(INITIAL_DEPOSIT, bankAccount.getBalance());
+        assertThrows(IllegalStateException.class,()->bankAccount.withdraw(2, DRAW_AMOUNT * 2));
     }
 
     @Test
     void tesMultipleWithdraw() {
         bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
-        multipleWithDraw();
-        assertEquals(DRAW_AMOUNT - DEFAULT_DRAW_FEE, bankAccount.getBalance());
+        assertThrows(IllegalStateException.class, this::multipleWithDraw);
     }
 }

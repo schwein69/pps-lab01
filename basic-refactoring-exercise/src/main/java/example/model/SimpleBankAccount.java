@@ -35,6 +35,8 @@ public class SimpleBankAccount implements BankAccount {
     public void withdraw(final int userID, final double amount) {
         if (checkUser(userID) && isWithdrawAllowed(amount)) {
             this.balance -= amount + FEE;
+        } else {
+            throw new IllegalStateException();
         }
     }
 
