@@ -32,13 +32,12 @@ public class SmartDoorLockTest {
 
     @Test
     void testSetPin() {
-        assertAll(() -> assertFalse(smartDoorLock.isLocked()), () -> assertFalse(smartDoorLock.isBlocked()));
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
     }
 
     @Test
     void testLockAfterSetPin() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         assertTrue(smartDoorLock.isLocked());
     }
@@ -50,7 +49,7 @@ public class SmartDoorLockTest {
 
     @Test
     void testIsBlocked() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         multipleAttempts();
         assertTrue(smartDoorLock.isBlocked());
@@ -58,7 +57,7 @@ public class SmartDoorLockTest {
 
     @Test
     void testIsNotBlocked() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         smartDoorLock.unlock(PIN);
         assertFalse(smartDoorLock.isBlocked());
@@ -66,7 +65,7 @@ public class SmartDoorLockTest {
 
     @Test
     void testCorrectPin() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         smartDoorLock.unlock(PIN);
         assertFalse(smartDoorLock.isLocked());
@@ -74,7 +73,7 @@ public class SmartDoorLockTest {
 
     @Test
     void testWrongPinFirstTime() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         smartDoorLock.unlock(WRONG_PIN);
         assertFalse(smartDoorLock.isBlocked());
@@ -87,7 +86,7 @@ public class SmartDoorLockTest {
 
     @Test
     void testFailedAttempts() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         smartDoorLock.unlock(WRONG_PIN);
         assertEquals(1, smartDoorLock.getFailedAttempts());
@@ -95,7 +94,7 @@ public class SmartDoorLockTest {
 
     @Test
     public void testReset() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         multipleAttempts();
         smartDoorLock.reset();
@@ -107,13 +106,13 @@ public class SmartDoorLockTest {
 
     @Test
     void testSetPinAgainWhenNotBlockedLocked() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         smartDoorLock.unlock(PIN);
         assertAll(
                 () -> assertFalse(smartDoorLock.isLocked()),
                 () -> assertFalse(smartDoorLock.isBlocked()));
-        smartDoorLock.setPin(NEW_PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(NEW_PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         smartDoorLock.unlock(NEW_PIN);
         assertFalse(smartDoorLock.isLocked());
@@ -121,14 +120,12 @@ public class SmartDoorLockTest {
 
     @Test
     void testSetPinAgainWhenBlockedLocked() {
-        smartDoorLock.setPin(PIN);
+        assertDoesNotThrow(()->smartDoorLock.setPin(PIN));
         assertDoesNotThrow(() -> smartDoorLock.lock());
         multipleAttempts();
         assertAll(
                 () -> assertTrue(smartDoorLock.isLocked()),
                 () -> assertTrue(smartDoorLock.isBlocked()));
-        smartDoorLock.setPin(NEW_PIN);
-        smartDoorLock.unlock(NEW_PIN);
-        assertTrue(smartDoorLock.isLocked());
+        assertThrows(IllegalStateException.class,()->smartDoorLock.setPin(NEW_PIN));
     }
 }

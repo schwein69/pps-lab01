@@ -25,6 +25,8 @@ public class SmartDoorLockImpl implements SmartDoorLock{
     public void setPin(int pin) {
         if (!locked && !blocked) {
             this.pin = pin;
+        } else{
+            throw new IllegalStateException();
         }
     }
 
