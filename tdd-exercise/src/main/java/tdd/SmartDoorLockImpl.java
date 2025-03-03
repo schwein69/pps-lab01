@@ -12,7 +12,6 @@ public class SmartDoorLockImpl implements SmartDoorLock{
     private int pin;
     private boolean locked;
     private boolean blocked;
-    private boolean reset;
 
     public SmartDoorLockImpl() {
         this.pin = 0;
